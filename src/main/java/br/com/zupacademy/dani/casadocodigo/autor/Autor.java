@@ -1,9 +1,6 @@
 package br.com.zupacademy.dani.casadocodigo.autor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -13,6 +10,7 @@ public class Autor {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Column(unique = true)
     private String email;
     private String descricao;
     private LocalDateTime criadoEm = LocalDateTime.now(ZoneOffset.UTC);

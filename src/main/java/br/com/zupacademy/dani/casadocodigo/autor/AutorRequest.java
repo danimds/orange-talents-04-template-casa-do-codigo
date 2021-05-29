@@ -17,7 +17,7 @@ public class AutorRequest {
         this.email = email;
         this.descricao = descricao;
     }
-    public Autor converter () {
+    public Autor ToModel () {
         return new Autor(this.nome, this.email, this.descricao);
     }
 
@@ -28,5 +28,17 @@ public class AutorRequest {
                 ", email='" + email + '\'' +
                 ", descricao='" + descricao + '\'' +
                 '}';
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDescricao() {
+        return descricao;
     }
 }
