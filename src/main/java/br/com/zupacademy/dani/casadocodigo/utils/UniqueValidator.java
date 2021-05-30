@@ -1,5 +1,7 @@
 package br.com.zupacademy.dani.casadocodigo.utils;
 
+import org.springframework.util.Assert;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -8,7 +10,6 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
 public class UniqueValidator implements ConstraintValidator<Unique, Object> {
-
     private String targetAttribute;
     private Class<?> klass;
 
@@ -16,17 +17,18 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
     private EntityManager manager;
 
     @Override
-    public void initialize(Unique unique) {
-        targetAttribute = unique.fieldName();
-        klass = unique.targetClass();
+    public void initialize(Unique params) {
+        targetAttribute = params.fieldName();
+        klass = params.targetClass();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
-        Query query = manager.createQuery("select k from " + klass.getName() + " k where " + targetAttribute + "=:pValue");
+        Query query = manager.createQuery("select k from "+klass.getName()+ " k where "+ targetAttribute+"=:pValue");
         query.setParameter("pValue", value);
-
         List<?> list = query.getResultList();
-        return list.size() == 0;
+        Assert.state(list.size() <=1, "Foi encontrado mais de um "+klass+" com o atributo "+targetAttribute+" = "+value);
+
+        return list.isEmpty();
     }
 }
